@@ -3,8 +3,14 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
-
+import { initDB } from "./database/initDB.js";
 import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import authMiddleware from "./middleware/authMiddleware.js";
+import productRoutes from "./routes/productRoutes.js";
+import inventoryRoutes from "./routes/inventoryRoutes.js";
+import customerRoutes from "./routes/customerRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -20,6 +26,18 @@ app.use(
 );
 
 app.use(morgan("dev"));
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/orders", orderRoutes);
+
+app.get("/api/test", authMiddleware, (req, res) => {
+  res.json({
+    success: true,
+    message: "Protected Route Accessed",
+  });
+});
 
 app.get("/", (req, res) => {
   res.json({
@@ -30,8 +48,10 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-async function startServer() {
+
+ async function startServer() {
   await connectDB();
+  await initDB();
 
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);

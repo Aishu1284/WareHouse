@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Customers from "./pages/Customers";
+import Orders from "./pages/Orders";
+import Inventory from "./pages/Inventory";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -41,6 +43,22 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+  path: "/orders",
+  element: (
+    <ProtectedRoute>
+      <Orders />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "/inventory",
+  element: (
+    <ProtectedRoute>
+      <Inventory />
+    </ProtectedRoute>
+  ),
+},
 ]);
 
 export default router;
